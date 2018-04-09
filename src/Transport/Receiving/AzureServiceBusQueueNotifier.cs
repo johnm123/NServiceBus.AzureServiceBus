@@ -63,6 +63,14 @@ namespace NServiceBus.Azure.Transports.WindowsAzureServiceBus
 
                 foreach (var receivedMessage in receivedMessages)
                 {
+                    // support case  https://c.eu1.visual.force.com/apex/Case?num=00035699
+                    logger.Info($"Message Timestamp (UTC): {DateTime.UtcNow}");
+                    logger.Info($"Message MessageId: {receivedMessage.MessageId}");
+                    logger.Info($"Message LockedUntilUtc: {receivedMessage.LockedUntilUtc}");
+                    logger.Info($"Message LockToken: {receivedMessage.LockToken}");
+                    logger.Info($"Message TimeToLive: {receivedMessage.TimeToLive}");
+                    logger.Info($"Message received: {receivedMessage}");
+
                     tryProcessMessage(receivedMessage);
                 }
             }
@@ -79,6 +87,10 @@ namespace NServiceBus.Azure.Transports.WindowsAzureServiceBus
             }
             catch (MessagingException ex)
             {
+                // support case https://c.eu1.visual.force.com/apex/Case?num=00035699
+                logger.Info($"MessagingException Timestamp: {ex.Timestamp}");
+                logger.Info($"MessagingException Exception: {ex}");
+
                 if (cancelRequested)
                 {
                     return;
